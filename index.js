@@ -1,8 +1,39 @@
 // required modules
-const fs = require("fs");
-const path = require("path");
+const fs = require("fs")
+const path = require("path")
 
-console.log("running the app  ...");
+console.log("running the app  ...")
+
+// Step 1
+const studentsData = fs.readFileSync("students.json", "utf-8")
+
+// Step 2
+const students = JSON.parse(studentsData)
+
+// Step 3
+let markdownContent = '# Student Report\n\n'
+markdownContent += `Generated on: ${Date.now()}\n\n`
+markdownContent += `## Summary\n\nTotal Students: ${students.length}\n\n`
+
+// Step 4
+students.forEach((student) => {
+  markdownContent += `### ${student.name}\n`
+  markdownContent += `- **Email:** ${student.email}\n`
+  markdownContent += `- **Major:** ${student.major}\n`
+  markdownContent += `- **GPA:** ${student.gpa}\n`
+  markdownContent += `- **ID:** ${student.id}\n\n`
+})
+
+// Step 5
+const outputPath = path.join(__dirname, 'student_report.md')
+
+// Step 6
+fs.writeFileSync(outputPath, markdownContent, 'utf-8')
+
+// Step 7
+console.log(`Report generated: ${outputPath}`)
+
+
 
 // Step 1: Read 'students.json' using fs.readFileSync
 // Pass 'utf-8' as the second argument so you get a text string, not raw binary
